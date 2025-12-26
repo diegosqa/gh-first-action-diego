@@ -1,10 +1,7 @@
 name: ML CI - Fase 1
 
 on:
-  push:
-    paths:
-      - "src/**"
-      - "requirements.txt"
+  push
 
 jobs:
   validate-ml:
