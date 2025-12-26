@@ -1,5 +1,9 @@
 name: ML CI - Fase 1
-on: push
+on: 
+    push:
+        paths:
+            - "src/**"
+            - "requirements.txt" 
 jobs: 
   validate-ml:
     runs-on: ubuntu-latest
