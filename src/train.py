@@ -2,7 +2,6 @@ import numpy as np
 import json
 from pathlib import Path
 
-print("Training model...")
 
 # Simulación de datos
 data = np.random.rand(100)
@@ -19,7 +18,6 @@ Path("artifacts").mkdir(exist_ok=True)
 with open("artifacts/model.json", "w") as f:
     json.dump(model, f)
 
-print("Model saved to artifacts/model.json")
 
 # ----- MÉTRICA (output) -----
 # SOLO key=value, nada más
