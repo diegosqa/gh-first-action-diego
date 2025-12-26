@@ -1,10 +1,17 @@
 name: ML CI - Fase 1
-on: push
-jobs: 
+
+on:
+  push:
+    paths:
+      - "src/**"
+      - "requirements.txt"
+
+jobs:
   validate-ml:
     runs-on: ubuntu-latest
+
     outputs:
-        mean: ${{steps.train.outputs.mean}}
+      mean: ${{ steps.train.outputs.mean }}
 
     steps:
       - name: Checkout code
@@ -13,38 +20,37 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-            python-version: '3.10'
+          python-version: '3.10'
 
-      - name: Install dependecies
+      - name: Install dependencies
         run: |
           pip install -r requirements.txt
+
       - name: Run training simulation
         id: train
         run: |
           python src/train.py >> $GITHUB_OUTPUT
 
-    
       - name: Upload model artifact
         uses: actions/upload-artifact@v4
         with:
-            name: trained-model
-            path: artifacts/model.json
-    
+          name: trained-model
+          path: artifacts/model.json
+
   evaluate-model:
     needs: validate-ml
     runs-on: ubuntu-latest
-    
 
     steps:
       - name: Download model artifact
         uses: actions/download-artifact@v4
         with:
-            name: trained-model
+          name: trained-model
+
       - name: Inspect model
         run: |
           cat model.json
+
       - name: Use mean output
         run: |
-          echo "Mean value from training: ${{ needs.train-model.outputs.mean }}"
-
-     
+          echo "Mean value from training: ${{ needs.validate-ml.outputs.mean }}"
