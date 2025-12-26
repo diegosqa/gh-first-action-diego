@@ -24,3 +24,19 @@ jobs:
         with:
             name: trained-model
             path: artifacts/model.json
+    
+  evaluate-model:
+    needs: validate-ml
+    runs-on: ubuntu-latest
+    
+
+    steps:
+      - name: Download model artifact
+        uses: actions/download-artifact@v4
+        with:
+            name: trained-model
+      - name: Inspect model
+        run: |
+          cat model.json
+
+     
