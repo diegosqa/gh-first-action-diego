@@ -3,6 +3,8 @@ on: push
 jobs: 
   validate-ml:
     runs-on: ubuntu-latest
+    outputs:
+        mean: ${{steps.train.outputs.mean}}
 
     steps:
       - name: Checkout code
@@ -17,8 +19,11 @@ jobs:
         run: |
           pip install -r requirements.txt
       - name: Run training simulation
+        id: train
         run: |
-          python src/train.py
+          python src/train.py >> $GITHUB_OUTPUT
+
+    
       - name: Upload model artifact
         uses: actions/upload-artifact@v4
         with:
@@ -38,5 +43,8 @@ jobs:
       - name: Inspect model
         run: |
           cat model.json
+      - name: Use mean output
+        run: |
+          echo "Mean value from training: ${{ needs.train-model.outputs.mean }}"
 
      
