@@ -1,9 +1,5 @@
 name: ML CI - Fase 1
-on: 
-    push:
-        paths:
-            - "src/**"
-            - "requirements.txt" 
+on: push
 jobs: 
   validate-ml:
     runs-on: ubuntu-latest
@@ -23,3 +19,8 @@ jobs:
       - name: Run training simulation
         run: |
           python src/train.py
+      - name: Upload model artifact
+        uses: actions/upload-artifact@v4
+        with:
+            name: trained-model
+            path: artifacts/model.json
